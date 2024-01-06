@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listagem de Arquivos</title>
+</head>
+<body>
+
+<h1>Listagem de Arquivos</h1>
+
+<!-- Div para exibir a lista de arquivos -->
+<div id="lista-arquivos"></div>
+
+<script>
+    // Função para carregar e exibir a lista de arquivos do diretório
+    function carregarListaArquivos() {
+        // Caminho do diretório
+        var diretorio = '/caminho/para/seu/diretorio/';
+
+        // Requisição AJAX para obter a lista de arquivos
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'lista_arquivos.php?diretorio=' + encodeURIComponent(diretorio), true);
+
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                // Parse JSON retornado pela lista_arquivos.php
+                var listaArquivos = JSON.parse(xhr.responseText);
+
+                // Construir a lista de arquivos HTML
+                var listaHtml = '<ul>';
+                for (var i = 0; i < listaArquivos.length; i++) {
+                    listaHtml += '<li>' + listaArquivos[i] + '</li>';
+                }
+                listaHtml += '</ul>';
+
+                // Exibir a lista de arquivos na div
+                document.getElementById('lista-arquivos').innerHTML = listaHtml;
+            } else {
+                console.error('Erro ao obter a lista de arquivos.');
+            }
+        };
+
+        xhr.send();
+    }
+
+    // Chamar a função ao carregar a página
+    window.onload = carregarListaArquivos;
+</script>
+
+</body>
+</html>
